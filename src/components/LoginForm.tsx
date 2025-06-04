@@ -38,6 +38,17 @@ const LoginForm: React.FC<LoginFormProps> = ({ onFinish }) => {
             <Button type="primary" htmlType="submit" block size="large">
               Log In
             </Button>
+            <Button
+              type="link"
+              className="mt-4"
+              onClick={() => {
+                // Handle navigation to signup page
+                window.location.href = '/signup';
+              }
+            }
+            >
+              Don't have an account? Sign Up
+            </Button>
           </Form.Item>
         </Form>
       </Card>
