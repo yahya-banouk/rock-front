@@ -1,23 +1,31 @@
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { signup } from '../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { signupUser } from '../redux/authSlice';
+import { Form, Input, Button, Select } from 'antd';
 import type { AppDispatch } from '../redux/store';
 
-const Signup = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+const SignUp = () => {
+    const dispatch = useDispatch<AppDispatch>();;
+    const { error } = useSelector((state: any) => state.auth);
 
-    const handleSignup = () => {
-        dispatch(signup({ username: 'newUser' }));
-        navigate('/');
+    const onFinish = (values: any) => {
+        dispatch(signupUser(values));
     };
 
     return (
-        <div style={{ padding: '2rem' }}>
-            <h2>Sign Up</h2>
-            <button onClick={handleSignup}>Sign Up</button>
-        </div>
-        );
+        <Form onFinish={onFinish} layout="vertical">
+            <Form.Item name="username" label="Username" rules={[{ required: true }]}>
+                <Input />
+            </Form.Item>
+            <Form.Item name="password" label="Password" rules={[{ required: true }]}>
+                <Input.Password />
+            </Form.Item>
+            <Form.Item name="role" label="Role" rules={[{ required: true }]}>
+                <Select options={[{ value: 'recruiter' }, { value: 'talent' }]} />
+            </Form.Item>
+            <Button htmlType="submit">Sign Up</Button>
+            {error && <p className="text-red-500">{error}</p>}
+        </Form>
+    );
 };
 
-export default Signup;
+export default SignUp;

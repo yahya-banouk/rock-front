@@ -30,7 +30,7 @@ export const mockLogin = async (
     };
 };
 
-export const mockSignup = async (username: string, password: string, email: string, role: userRole) => {
+export const mockSignup = async (username: string, password: string, role: userRole, email: string) => {
     const existing = mockUsers.find((u) => u.username === username);
     if (existing) throw new Error('User already exists');
 

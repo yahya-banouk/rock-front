@@ -1,20 +1,31 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../redux/authSlice';
-import type { AppDispatch } from '../redux/store';
+import { loginUser } from '../redux/authSlice';
 import LoginForm from '../components/LoginForm';
+import { unwrapResult } from '@reduxjs/toolkit';
+import type { AppDispatch } from '../redux/store';
+
 
 const Login = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();;
   const navigate = useNavigate();
+  const { error } = useSelector((state: any) => state.auth);
 
-  const onFinish = (values: any) => {
-    dispatch(login({ username: values.username }));
-    navigate('/');
+  const handleFinish = async (values: any) => {
+    try {
+      const resultAction = await dispatch(loginUser(values));
+      const data = unwrapResult(resultAction); // now typed as { token, user }
+      navigate('/');
+    } catch (err: any) {
+      console.error('Login failed:', err);
+    }
   };
 
   return (
-  <LoginForm onFinish={onFinish} />
+    <div>
+      <LoginForm onFinish={handleFinish} />
+      {error && <p className="text-red-500 text-center">{error}</p>}
+    </div>
   );
 };
 
