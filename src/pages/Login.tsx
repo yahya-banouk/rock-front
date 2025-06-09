@@ -14,12 +14,15 @@ const Login = () => {
   const handleFinish = async (values: any) => {
     try {
       const resultAction = await dispatch(loginUser(values));
-      const data = unwrapResult(resultAction); // now typed as { token, user }
-      navigate('/');
+      const data = unwrapResult(resultAction); // data contains { token, user }
+  
+      const role = data.user.role;
+      navigate(role === 'recruiter' ? '/recruiter' : '/candidate');
     } catch (err: any) {
       console.error('Login failed:', err);
     }
   };
+  
 
   return (
     <div>

@@ -1,25 +1,30 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+// src/App.tsx
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom'; // ❌ no BrowserRouter here!
 import { useSelector } from 'react-redux';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Home from './pages/Home';
 import type { RootState } from './redux/store';
+import Login from './pages/Login';
+import SignUp from './pages/Signup';
+import HomeCandidate from './pages/HomeCandidate';
+import HomeRecruiter from './pages/HomeRecruiter';
+import RoleRedirect from './pages/RoleRedirect';
 
-function App() {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+const App = () => {
+  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
 
   return (
     <Routes>
+      <Route path="/" element={<RoleRedirect />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route
-        path="/"
-        element={
-          isAuthenticated ? <Home /> : <Navigate to="/login" replace />
-        }
-      />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/candidate" element={
+        isAuthenticated && user?.role === 'talent' ? <HomeCandidate /> : <Navigate to="/login" />
+      }/>
+      <Route path="/recruiter" element={
+        isAuthenticated && user?.role === 'recruiter' ? <HomeRecruiter /> : <Navigate to="/login" />
+      }/>
     </Routes>
   );
-}
+};
 
 export default App;
