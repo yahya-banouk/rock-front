@@ -1,5 +1,3 @@
-// src/App.tsx
-import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom'; // ❌ no BrowserRouter here!
 import { useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
