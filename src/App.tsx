@@ -1,8 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom'; // ❌ no BrowserRouter here!
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
 import Login from './pages/Login';
-import SignUp from './pages/Signup';
+import SignUp from './pages/SignUp';
 import HomeCandidate from './pages/HomeCandidate';
 import HomeRecruiter from './pages/HomeRecruiter';
 import RoleRedirect from './pages/RoleRedirect';

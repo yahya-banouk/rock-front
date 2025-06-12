@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { signupUser } from '../redux/authSlice';
 import type { AppDispatch } from '../redux/store';
-import SignUpForm from '../components/SignupForm';
+import SignUpForm from '../components/SignUpForm';
 
 const SignUp = () => {
     const dispatch = useDispatch<AppDispatch>();;
