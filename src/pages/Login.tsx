@@ -14,7 +14,7 @@ const Login = () => {
   const handleFinish = async (values: any) => {
     try {
       const resultAction = await dispatch(loginUser(values));
-      const data = unwrapResult(resultAction); // data contains { token, user }
+      const data = unwrapResult(resultAction);
   
       const role = data.user.role;
       navigate(role === 'recruiter' ? '/recruiter' : '/candidate');

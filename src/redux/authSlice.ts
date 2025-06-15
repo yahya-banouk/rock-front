@@ -19,8 +19,8 @@ const initialState: AuthState = {
 };
 
 export const loginUser = createAsyncThunk<
-    { token: string; user: User }, // return type
-    { username: string; password: string }, // argument type
+    { token: string; user: User },
+    { username: string; password: string },
     { rejectValue: string }
     >('auth/loginUser', async ({ username, password }, thunkAPI) => {
         try {
@@ -32,8 +32,8 @@ export const loginUser = createAsyncThunk<
 );
 
 export const signupUser = createAsyncThunk<
-    void, // return type
-    { username: string; password: string; role: userRole, email: string }, // argument type
+    void,
+    { username: string; password: string; role: userRole, email: string },
     { rejectValue: string }
     >('auth/signupUser', async ({ username, password, role, email }, thunkAPI) => {
     try {

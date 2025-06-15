@@ -68,7 +68,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onFinish }) => {
                         type="link"
                         className="mt-4"
                         onClick={() => {
-                            // Handle navigation to signup page
                             window.location.href = "/login";
                         }}
                         >

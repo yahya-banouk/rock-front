@@ -1,5 +1,4 @@
 export const mockMatchJobs = async (cvData: string) => {
-    // In a real app, you'd POST `cvData` to an AI API
     return [
         { title: 'Frontend Developer', company: 'TechCorp', match: 92 },
         { title: 'React Engineer', company: 'DevStudios', match: 87 },

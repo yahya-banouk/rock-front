@@ -36,7 +36,6 @@ export const mockSignup = async (username: string, password: string, role: userR
 
     mockUsers.push({ username, password, role, confirmed: false, email, status: 'active' });
 
-    // Simulate sending email
     console.log(`[Email Sent] Confirmation link for ${username}`);
 
     return { message: 'Confirmation email sent' };
