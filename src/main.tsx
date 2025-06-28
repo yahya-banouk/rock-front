@@ -1,17 +1,30 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import store from './redux/store';
-import './index.css';
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </StrictMode>
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <Auth0Provider
+      domain="dev-e3vutojh0e36c0c0.us.auth0.com"
+      clientId="mAZzmJev4RQ75mRck1cuTIlBfkvxNyQa"  // From the same screen
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: "https://rock-app",  // From your API settings
+        scope: "openid profile email"
+      }}
+      onRedirectCallback={(appState) =>
+        window.history.replaceState({}, document.title, appState?.target || '/')
+      }
+    >
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </Auth0Provider>
+  </React.StrictMode>
 );

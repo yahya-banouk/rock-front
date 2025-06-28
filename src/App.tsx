@@ -1,28 +1,38 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from './redux/store';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
-import HomeCandidate from './pages/HomeCandidate';
-import HomeRecruiter from './pages/HomeRecruiter';
-import RoleRedirect from './pages/RoleRedirect';
+import Start from './pages/Start';
+import TalentDashboard from './pages/TalentDashboard';
+import RecruiterDashboard from './pages/RecruiterDashboard';
+import { ProtectedRoute, RoleGuard } from './components/ProtectedRoute';
+import AuthSync from './components/AuthSync';
 
-const App = () => {
-  const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
-
+export default function App() {
+  const { isAuthenticated, role } = useSelector((s: RootState) => s.auth);
+  const location = useLocation();
+  const roleRedirect =
+    role === 'talent' ? '/talent' : role === 'recruiter' ? '/recruiter' : null;
+  const shouldRedirect = (location.pathname === '/' || location.pathname === '/login') && isAuthenticated && roleRedirect;
+  if (isAuthenticated && !role) {
+    return <div>Loading role, please wait...</div>; // 👈 Temporary placeholder
+  }
   return (
-    <Routes>
-      <Route path="/" element={<RoleRedirect />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/candidate" element={
-        isAuthenticated && user?.role === 'talent' ? <HomeCandidate /> : <Navigate to="/login" />
-      }/>
-      <Route path="/recruiter" element={
-        isAuthenticated && user?.role === 'recruiter' ? <HomeRecruiter /> : <Navigate to="/login" />
-      }/>
-    </Routes>
+    <>
+      <AuthSync />
+      {shouldRedirect && <Navigate to={roleRedirect!} />}
+      <Routes>
+      <Route path="/" element={<Start />} />
+      <Route path="/login" element={<Navigate to="/" />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<RoleGuard role="talent" />}>
+            <Route path="/talent" element={<TalentDashboard />} />
+          </Route>
+          <Route element={<RoleGuard role="recruiter" />}>
+            <Route path="/recruiter" element={<RecruiterDashboard />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </>
   );
-};
-
-export default App;
+}

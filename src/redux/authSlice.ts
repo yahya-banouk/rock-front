@@ -1,77 +1,38 @@
-
-import type { User, userRole } from '../types/User';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { mockLogin, mockSignup } from '../api/mockAuthApi';
-
+import { createSlice} from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+export type UserRole = 'talent' | 'recruiter';
 
 interface AuthState {
-    isAuthenticated: boolean;
-    user: User | null;
-    token: string | null;
-    error: string | null;
+  isAuthenticated: boolean;
+  token: string | null;
+  role: UserRole | null;
 }
 
 const initialState: AuthState = {
-    isAuthenticated: false,
-    user: null,
-    token: null,
-    error: null,
+  isAuthenticated: false,
+  token: null,
+  role: null,
 };
 
-export const loginUser = createAsyncThunk<
-    { token: string; user: User },
-    { username: string; password: string },
-    { rejectValue: string }
-    >('auth/loginUser', async ({ username, password }, thunkAPI) => {
-        try {
-            return await mockLogin(username, password);
-            } catch (e: any) {
-            return thunkAPI.rejectWithValue(e.message);
-        }
-    }
-);
-
-export const signupUser = createAsyncThunk<
-    void,
-    { username: string; password: string; role: userRole, email: string },
-    { rejectValue: string }
-    >('auth/signupUser', async ({ username, password, role, email }, thunkAPI) => {
-    try {
-        await mockSignup(username, password, role, email);
-    } catch (e: any) {
-        return thunkAPI.rejectWithValue(e.message);
-    }
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    setCredentials: (
+      state,
+      action: PayloadAction<{ token: string; role: UserRole }>
+    ) => {
+      state.token = action.payload.token;
+      state.role = action.payload.role;
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.token = null;
+      state.role = null;
+    },
+  },
 });
 
-const authSlice = createSlice({
-    name: 'auth',
-    initialState,
-    reducers: {
-        logout: (state) => {
-            state.user = null;
-            state.token = null;
-            state.isAuthenticated = false;
-        },  
-    },
-    extraReducers: (builder) => {
-        builder
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
-                state.token = action.payload.token;
-                state.isAuthenticated = true;
-                state.error = null;
-            })        
-            .addCase(loginUser.rejected, (state, action) => {
-                state.error = action.payload ?? null;
-            })
-            .addCase(signupUser.fulfilled, (state) => {
-                state.error = null;
-            })
-            .addCase(signupUser.rejected, (state, action) => {
-                state.error = action.payload ?? null;
-            });
-    },
-});
-
-export const { logout } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
