@@ -4,14 +4,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 export default function Start() {
   const { loginWithRedirect } = useAuth0();
   const [role, setRole] = useState<'talent' | 'recruiter'>('talent');
-  const [isNewUser, setIsNewUser] = useState(false); // 👈 choose between login and signup
+  const [isNewUser, setIsNewUser] = useState(false);
 
   const handleAuth = () => {
     loginWithRedirect({
       appState: { target: role === 'talent' ? '/talent' : '/recruiter' },
       authorizationParams: {
-        ...(isNewUser && { screen_hint: 'signup' }), // 👈 only add for signup
-        role, // 👈 required by your Action
+        ...(isNewUser && { screen_hint: 'signup' }),
+        role,
       },
     });
   };

@@ -10,10 +10,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Auth0Provider
       domain="dev-e3vutojh0e36c0c0.us.auth0.com"
-      clientId="mAZzmJev4RQ75mRck1cuTIlBfkvxNyQa"  // From the same screen
+      clientId="mAZzmJev4RQ75mRck1cuTIlBfkvxNyQa"  
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: "https://rock-app",  // From your API settings
+        audience: "https://rock-app",  
         scope: "openid profile email"
       }}
       onRedirectCallback={(appState) =>

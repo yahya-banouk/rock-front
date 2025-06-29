@@ -14,7 +14,7 @@ export default function App() {
     role === 'talent' ? '/talent' : role === 'recruiter' ? '/recruiter' : null;
   const shouldRedirect = (location.pathname === '/' || location.pathname === '/login') && isAuthenticated && roleRedirect;
   if (isAuthenticated && !role) {
-    return <div>Loading role, please wait...</div>; // 👈 Temporary placeholder
+    return <div>Loading role, please wait...</div>;
   }
   return (
     <>
