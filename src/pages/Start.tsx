@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Typography, Card } from 'antd';
+import Logo from '../components/ui/Logo';
+import { RoleSelector } from '../components/ui/RoleSelector';
+import { AuthToggle } from '../components/ui/AuthToggle';
+import { PrimaryButton } from '../components/ui/PrimaryButton';
+
+const { Title, Text } = Typography;
 
 export default function Start() {
   const { loginWithRedirect } = useAuth0();
@@ -17,32 +24,21 @@ export default function Start() {
   };
 
   return (
-    <div>
-      <h2>{isNewUser ? 'Sign Up' : 'Login'}</h2>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#F9FAFB' }}>
+      <Card style={{ width: 400, padding: 24, borderRadius: 16, textAlign: 'center' }}>
+        <Logo />
+        <Title level={3}>Welcome to CareerLift</Title>
+        <Text type="secondary">Helping Talents grow & Recruiters hire better</Text>
 
-      <label>
-        <input type="radio" value="talent" checked={role === 'talent'} onChange={() => setRole('talent')} />
-        Talent
-      </label>
-      <label>
-        <input type="radio" value="recruiter" checked={role === 'recruiter'} onChange={() => setRole('recruiter')} />
-        Recruiter
-      </label>
+        <div style={{ marginTop: 24 }}>
+          <RoleSelector value={role} onChange={setRole} />
+          <AuthToggle checked={isNewUser} onChange={() => setIsNewUser(!isNewUser)} />
+        </div>
 
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            checked={isNewUser}
-            onChange={() => setIsNewUser(!isNewUser)}
-          />
-          I’m new (sign up)
-        </label>
-      </div>
-
-      <button onClick={handleAuth}>
-        {isNewUser ? 'Sign up' : 'Log in'} as {role}
-      </button>
+        <div style={{ marginTop: 32 }}>
+          <PrimaryButton text={`${isNewUser ? 'Sign up' : 'Log in'} as ${role}`} onClick={handleAuth} />
+        </div>
+      </Card>
     </div>
   );
 }
